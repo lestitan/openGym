@@ -3616,6 +3616,8 @@ export default {
   "Beginner to Elite for your main lifts, measured against your body weight.": "주요 리프트의 입문자부터 엘리트까지, 체중 대비로 측정해요.",
   "Body and health": "몸과 건강",
   "Change it anytime in Settings → Modules.": "언제든 설정 → 모듈에서 바꿀 수 있어요.",
+  "Start with a ready plan?": "준비된 플랜으로 시작할까요?",
+  "Pick one later in Plan, or build your own.": "나중에 플랜에서 고르거나 직접 만들어도 돼요.",
   "Extras": "추가 기능",
   "Film a set and watch it back right under the row.": "세트를 촬영하고 바로 그 줄 아래에서 다시 봐요.",
   "Form videos": "자세 영상",

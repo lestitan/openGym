@@ -3616,6 +3616,8 @@ export default {
   "Beginner to Elite for your main lifts, measured against your body weight.": "Ana hareketlerinde Başlangıç’tan Elit’e, vücut ağırlığına göre.",
   "Body and health": "Vücut ve sağlık",
   "Change it anytime in Settings → Modules.": "İstediğin zaman Ayarlar → Modüller’den değiştirebilirsin.",
+  "Start with a ready plan?": "Hazır bir planla başlamak ister misin?",
+  "Pick one later in Plan, or build your own.": "Sonra Plan’dan birini seç ya da kendininkini oluştur.",
   "Extras": "Ekstralar",
   "Film a set and watch it back right under the row.": "Bir seti çek ve hemen satırın altında izle.",
   "Form videos": "Teknik videoları",

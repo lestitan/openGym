@@ -3671,6 +3671,8 @@ export default {
   "Beginner to Elite for your main lifts, measured against your body weight.": "من مبتدئ إلى نخبة في تمارينك الأساسية، مقارنةً بوزن جسمك.",
   "Body and health": "الجسم والصحة",
   "Change it anytime in Settings → Modules.": "غيّرها متى شئت من الإعدادات → الوحدات.",
+  "Start with a ready plan?": "هل تبدأ بخطة جاهزة؟",
+  "Pick one later in Plan, or build your own.": "اختر واحدة لاحقًا من الخطة، أو ابنِ خطتك بنفسك.",
   "Extras": "إضافات",
   "Film a set and watch it back right under the row.": "صوّر مجموعة وشاهدها مباشرةً تحت السطر.",
   "Form videos": "فيديوهات الأسلوب",

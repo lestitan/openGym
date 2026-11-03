@@ -23,7 +23,8 @@ import {
   useTour, tourSteps, stepFrom, indexOfStep, noteStep, markTourDone, markTutorialDone, markOffered, markResumeAsked,
   openTour, closeTour, placeCard, visiblePart, routeOf, reached, passOver, TUTORIALS, TUTORIAL_COPY, SAMPLE_ROUTINE_ID, SAMPLE_WORKOUT_ID,
 } from '../lib/tour.js'
-import { beginWorkout } from '../sheets.jsx'
+import { beginWorkout, loadStarterPlan, PLAN_COPY } from '../sheets.jsx'
+import { starterPlanOptions } from '../lib/starter.js'
 import { Button } from './ui.jsx'
 import Icon from './Icon.jsx'
 import { PRESETS, presetOf, applyPreset } from '../lib/modules.js'
@@ -282,18 +283,29 @@ function useCardKeys(cardRef, onEscape, trap = true) {
    halfway. A small card in the middle; either answer is remembered.
    The first one also asks how much app this profile wants (Settings → Modules, lib/modules.js):
    three presets, Everything chosen until another is tapped, so a new profile that skips straight
-   on has every module, like an existing one. A tap applies it at once; both buttons keep it. */
+   on has every module, like an existing one. A tap applies it at once; both buttons keep it.
+   A profile with no routines yet is also offered a starter plan (sheets.jsx loadStarterPlan), the
+   gentlest first. "Not now" is chosen until a tap; the plan loads when the card closes, whichever
+   way, since loading on each tap would leave every plan tried behind as routines. */
 function Question({ kind, at }) {
   const cardRef = useRef(null)
   const resume = kind === 'resume'
   useEffect(() => { if (resume) markResumeAsked(); else markOffered() }, [resume])
   useEffect(() => { cardRef.current?.focus() }, [])
-  const no = () => { if (resume) markTourDone(); closeTour() }
-  const yes = () => openTour({ kind: 'run', at: resume ? at : null })
+  // Decided once: the question stays put after the plan it offered has loaded.
+  const [askPlan] = useState(() => !resume && !(useStore.getState().S.routines || []).length)
+  const [plan, setPlan] = useState('')
+  const planRef = useRef('')
+  const choosePlan = id => { planRef.current = id; setPlan(id) }
+  const loadPlan = () => { const id = planRef.current; planRef.current = ''; if (id) loadStarterPlan(id) }
+  const no = () => { loadPlan(); if (resume) markTourDone(); closeTour() }
+  const yes = () => { loadPlan(); openTour({ kind: 'run', at: resume ? at : null }) }
   useCardKeys(cardRef, no)
   const S = useStore(s => s.S)
   const preset = presetOf(S)
   const pick = id => { if (id !== preset) useStore.getState().update(s => applyPreset(s, id)) }
+  const plans = askPlan ? PLAN_ORDER.map(id => starterPlanOptions().find(o => o.id === id)).filter(Boolean) : []
+  const planCopy = plan && PLAN_COPY[plan]()
   return <div className="tour tour-ask">
     <div className="tour-block tour-dim" />
     <div className="tour-card tour-center" ref={cardRef} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby="tour-t" aria-describedby="tour-b">
@@ -307,6 +319,16 @@ function Question({ kind, at }) {
         </div>
         <p className="tour-pick-f">{t('Change it anytime in Settings → Modules.')}</p>
       </>}
+      {askPlan && <>
+        <h2 id="tour-p" className="tour-q2">{t('Start with a ready plan?')}</h2>
+        <div className="chips wrap tour-plans" role="radiogroup" aria-labelledby="tour-p">
+          <button type="button" role="radio" aria-checked={!plan} className={'chip nocap' + (!plan ? ' on' : '')} data-plan="" onClick={() => choosePlan('')}>{t('Not now')}</button>
+          {plans.map(({ id, days }) => <button key={id} type="button" role="radio" aria-checked={plan === id} className={'chip nocap' + (plan === id ? ' on' : '')} data-plan={id} onClick={() => choosePlan(id)}>
+            {PLAN_COPY[id]().name} <span className="dim">· {t('{0} days', days)}</span>
+          </button>)}
+        </div>
+        <p className="tour-pick-f">{planCopy ? t('{0} days per week', starterPlanOptions().find(o => o.id === plan).days) + ' · ' + planCopy.about : t('Pick one later in Plan, or build your own.')}</p>
+      </>}
       <h2 id="tour-t" className={resume ? '' : 'tour-q2'}>{resume ? t('Finish the tour?') : t('Want a 1-minute tour?')}</h2>
       <p id="tour-b">{resume ? t('You stopped halfway. Want to see the rest?') : t('We’ll point at the good bits on the real screens. Bail out anytime.')}</p>
       <div className="tour-acts">
@@ -316,6 +338,9 @@ function Question({ kind, at }) {
     </div>
   </div>
 }
+
+// The first card's starter plans, the gentlest first: a newcomer reads the list top down.
+const PLAN_ORDER = ['full-body', 'upper-lower', 'ppl', '5x5']
 
 // A tutorial from the closing card: the tour counts as seen, the tutorial runs from its start.
 const runTutorial = flow => { markTourDone(); leaveSandbox(); openTour({ kind: 'run', at: null, flow }) }

@@ -3695,6 +3695,8 @@ export default {
   "Beginner to Elite for your main lifts, measured against your body weight.": "আপনার মূল লিফটগুলোতে শিক্ষানবিশ থেকে এলিট, আপনার শরীরের ওজনের তুলনায়।",
   "Body and health": "শরীর ও স্বাস্থ্য",
   "Change it anytime in Settings → Modules.": "যেকোনো সময় সেটিংস → মডিউল থেকে বদলাতে পারেন।",
+  "Start with a ready plan?": "একটি তৈরি প্ল্যান দিয়ে শুরু করবেন?",
+  "Pick one later in Plan, or build your own.": "পরে প্ল্যান থেকে একটি বেছে নিন, বা নিজেরটা বানান।",
   "Extras": "এক্সট্রা",
   "Film a set and watch it back right under the row.": "একটা সেট ভিডিও করুন আর সারির ঠিক নিচেই আবার দেখুন।",
   "Form videos": "ফর্ম ভিডিও",
