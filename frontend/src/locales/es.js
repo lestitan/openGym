@@ -3616,6 +3616,8 @@ export default {
   "Beginner to Elite for your main lifts, measured against your body weight.": "De Principiante a Élite en tus ejercicios principales, según tu peso corporal.",
   "Body and health": "Cuerpo y salud",
   "Change it anytime in Settings → Modules.": "Cámbialo cuando quieras en Ajustes → Módulos.",
+  "Start with a ready plan?": "¿Empezar con un plan listo?",
+  "Pick one later in Plan, or build your own.": "Elige uno más tarde en Plan, o crea el tuyo.",
   "Extras": "Extras",
   "Film a set and watch it back right under the row.": "Graba una serie y mírala justo debajo de la fila.",
   "Form videos": "Vídeos de técnica",

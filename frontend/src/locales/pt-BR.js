@@ -2421,6 +2421,8 @@ export const PT_BR_OVERRIDES = {
   // --- Settings → Modules (1.4.4) ---
   "Beginner to Elite for your main lifts, measured against your body weight.": "De Iniciante a Elite nos seus exercícios principais, medido em relação ao seu peso corporal.",
   "Change it anytime in Settings → Modules.": "Mude quando quiser em Configurações → Módulos.",
+  "Start with a ready plan?": "Começar com um plano pronto?",
+  "Pick one later in Plan, or build your own.": "Escolha um depois em Plano, ou crie o seu.",
   "Film a set and watch it back right under the row.": "Filme uma série e assista logo abaixo da linha.",
   "How much app do you want?": "Quanto app você quer?",
   "Log sets from your wrist on an Apple Watch, Wear OS or Zepp watch.": "Registre séries pelo pulso em um Apple Watch, Wear OS ou relógio Zepp.",

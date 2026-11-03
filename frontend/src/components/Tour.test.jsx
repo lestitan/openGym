@@ -18,12 +18,19 @@ vi.mock('../sheets.jsx', async () => {
     beginWorkout: vi.fn(ids => useStore.getState().update(s => {
       s.active = { id: 'run-1', d: '2026-10-26', start: Date.now(), routineIds: ids, name: 'Practice run', cur: 0, entries: [] }
     })),
+    loadStarterPlan: vi.fn(() => true),
+    PLAN_COPY: {
+      ppl: () => ({ name: 'Push / Pull / Legs', about: 'Push, pull and legs each get their own day.' }),
+      'upper-lower': () => ({ name: 'Upper / Lower', about: 'Upper body twice, lower body twice.' }),
+      'full-body': () => ({ name: 'Full Body', about: 'Three sessions, the whole body each time.' }),
+      '5x5': () => ({ name: '5×5', about: 'Five sets of five on the main barbell lifts.' }),
+    },
   }
 })
 
 import { useStore, DEF } from '../store/useStore.js'
 import { useUI } from '../store/useUI.js'
-import { beginWorkout } from '../sheets.jsx'
+import { beginWorkout, loadStarterPlan } from '../sheets.jsx'
 import { openTour, closeTour, tourState, readTour, noteStep, SAMPLE_ROUTINE_ID, SAMPLE_WORKOUT_ID } from '../lib/tour.js'
 import Tour, { _setAnchorWait } from './Tour.jsx'
 
@@ -127,7 +134,7 @@ describe('the first-run question', () => {
     useStore.setState(st => ({ S: { ...st.S, modules: undefined } }))
     await act(async () => { openTour({ kind: 'offer' }) })
     await render()
-    const radios = [...card().querySelectorAll('[role="radio"]')]
+    const radios = [...card().querySelectorAll('.tour-presets [role="radio"]')]
     expect(radios.map(r => r.querySelector('.tour-tut-t').textContent)).toEqual(['Just training', 'Training and body', 'Everything'])
     expect(radios.map(r => r.getAttribute('aria-checked'))).toEqual(['false', 'false', 'true'])
     expect(card().textContent).toContain('Change it anytime in Settings → Modules.')
@@ -140,11 +147,50 @@ describe('the first-run question', () => {
     expect(useStore.getState().S.modules.body).toBe(false)
     useStore.setState(st => ({ S: { ...st.S, modules: undefined } }))
   })
+  it('offers a profile with no routines a starter plan, gentlest first, loaded only when the card closes', async () => {
+    loadStarterPlan.mockClear()
+    await act(async () => { openTour({ kind: 'offer' }) })
+    await render()
+    const chips = () => [...card().querySelectorAll('.tour-plans [role="radio"]')]
+    expect(chips().map(c => c.dataset.plan)).toEqual(['', 'full-body', 'upper-lower', 'ppl', '5x5'])
+    expect(chips().map(c => c.getAttribute('aria-checked'))).toEqual(['true', 'false', 'false', 'false', 'false'])
+    expect(card().textContent).toContain('Pick one later in Plan, or build your own.')
+    await click(chips()[2])
+    await click(chips()[1])
+    expect(chips()[1].getAttribute('aria-checked')).toBe('true')
+    expect(card().textContent).toContain('3 days per week · Three sessions, the whole body each time.')
+    // trying plans out loads none of them; the one chosen loads once, with the card's answer
+    expect(loadStarterPlan).not.toHaveBeenCalled()
+    await click(btn('Show me'))
+    expect(loadStarterPlan.mock.calls).toEqual([['full-body']])
+    expect(step()).toBe('today')
+  })
+  it('Skip and Escape keep the plan too, and Not now loads nothing', async () => {
+    loadStarterPlan.mockClear()
+    await act(async () => { openTour({ kind: 'offer' }) })
+    await render()
+    await click(card().querySelector('[data-plan="ppl"]'))
+    await key('Escape')
+    expect(loadStarterPlan.mock.calls).toEqual([['ppl']])
+    loadStarterPlan.mockClear()
+    await act(async () => { openTour({ kind: 'offer' }) })
+    await settle()
+    await click(btn('Skip'))
+    expect(loadStarterPlan).not.toHaveBeenCalled()
+  })
+  it('does not offer a plan to a profile that already has routines', async () => {
+    useStore.setState(st => ({ S: { ...st.S, routines: [{ id: 'mine', name: 'Mine', ex: [] }] } }))
+    await act(async () => { openTour({ kind: 'offer' }) })
+    await render()
+    expect(card().querySelector('.tour-plans')).toBe(null)
+    expect(card().querySelector('.tour-presets')).not.toBe(null)
+  })
   it('the halfway card does not ask about modules again', async () => {
     noteStep('lib-search')
     await act(async () => { openTour({ kind: 'resume', at: 'lib-search' }) })
     await render()
     expect(card().querySelector('[role="radiogroup"]')).toBe(null)
+    expect(card().querySelector('.tour-plans')).toBe(null)
   })
   it('Show me starts the tour on Home, and Escape is a no as well', async () => {
     await act(async () => { openTour({ kind: 'offer' }) })

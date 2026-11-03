@@ -3613,6 +3613,8 @@ export default {
   "Beginner to Elite for your main lifts, measured against your body weight.": "Від початківця до еліти в основних вправах, відносно ваги тіла.",
   "Body and health": "Тіло і здоров'я",
   "Change it anytime in Settings → Modules.": "Змінити можна будь-коли: Налаштування → Модулі.",
+  "Start with a ready plan?": "Почати з готового плану?",
+  "Pick one later in Plan, or build your own.": "Оберіть його пізніше в розділі «План» або складіть свій.",
   "Extras": "Додатково",
   "Film a set and watch it back right under the row.": "Зніми підхід на відео й переглянь його просто під рядком.",
   "Form videos": "Відео техніки",

@@ -3627,6 +3627,8 @@ export default {
   "Beginner to Elite for your main lifts, measured against your body weight.": "ตั้งแต่มือใหม่ถึงระดับแนวหน้าสำหรับท่าหลักของคุณ เทียบกับน้ำหนักตัว",
   "Body and health": "ร่างกายและสุขภาพ",
   "Change it anytime in Settings → Modules.": "เปลี่ยนได้ทุกเมื่อที่ ตั้งค่า → โมดูล",
+  "Start with a ready plan?": "เริ่มด้วยแผนสำเร็จรูปไหม?",
+  "Pick one later in Plan, or build your own.": "เลือกทีหลังได้ในแผน หรือสร้างแผนของคุณเอง",
   "Extras": "ส่วนเสริม",
   "Film a set and watch it back right under the row.": "ถ่ายวิดีโอเซ็ตแล้วดูย้อนหลังได้ใต้แถวนั้นเลย",
   "Form videos": "วิดีโอท่าทาง",

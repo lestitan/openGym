@@ -3609,6 +3609,8 @@ export default {
   "Beginner to Elite for your main lifts, measured against your body weight.": "主要動作從入門到菁英，依你的體重衡量。",
   "Body and health": "身體與健康",
   "Change it anytime in Settings → Modules.": "隨時可以在 設定 → 模組 中更改。",
+  "Start with a ready plan?": "從現成的計畫開始？",
+  "Pick one later in Plan, or build your own.": "之後可以在 計畫 中挑一個，或者自己建一個。",
   "Extras": "額外功能",
   "Film a set and watch it back right under the row.": "拍下一組，直接在這一列下方回看。",
   "Form videos": "動作影片",
